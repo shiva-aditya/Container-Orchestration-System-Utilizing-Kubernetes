@@ -1,0 +1,63 @@
+* install docker,kubectl,minikube in windows
+
+* seperate yaml code in to 4 files
+
+* open the 1st docker file path and go to git bash , use
+
+  docker build -t details .
+  docker tag details:latest sanjaydurga/details
+  docker push sanjaydurga/details
+
+* now,go to seperated yaml files(change the image nameand save the yaml files) path and open git bash, use
+  
+  minikube start
+  kubectl apply -f details.yaml
+  kubectl get pods
+  kubectl get deploy
+  kubectl get service (COMTAINER CREATING ---> RUNNING)
+  minikube service details-service
+  
+  continue this process for all the docker files(for 4 files)
+
+4 PODS ARE CREATED AND HOSTED ----> 3 WEB PAGES FRONTEND IS "OK" AND ONE WEB PAGE FRONTEND IS PINGER STATISTICS
+
+* INSTALL choco and helm in powershell
+  Get-ExecutionPolicy (output--> Restricted)
+  Set-ExecutionPolicy AllSigned or Set-ExecutionPolicy Bypass -Scope Process
+  Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+  choco
+  choco installed
+
+  choco install kubernetes-helm 
+  helm installed
+
+* helm version
+  kubectl get pods
+  helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+  helm search repo prometheus
+  helm repo update
+  helm install prometheus prometheus-community/prometheus
+  kubectl get all
+  kubectl get svc
+  kubectl expose service prometheus-server --type=NodePort --target-port=9090 --name=prometheus-server-ext
+  minikube service prometheus-server-ext
+  kubectl get pod (containercreating ---> running)
+  minikube service prometheus-server-ext
+  kubectl get svc
+  minikube service prometheus-server-ext
+  helm repo add grafana https://grafana.github.io/helm-charts
+  helm repo update
+  helm install grafana grafana/grafana
+  helm list
+  kubectl expose service grafana --type=NodePort --target-port=3000 --name=grafana-ext
+  minikube service grafana-ext
+  kubectl get pods (running)
+  minikube service grafana-ext
+
+* to get login credentials --->
+  
+  kubectl get secret --namespace default grafana -o yaml
+  echo "YWRtaW4=" | openssl base64 -d ; echo
+  echo " RmpzMkEyRGNpNEhNREhDcWFQcllLSGFlVXpJNmNOYVJHaU1vTVhBVA==" | openssl base64 -d ; echo
+  minikube service grafana-ext
+  login using admin as username and password from above command

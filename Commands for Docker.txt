@@ -1,0 +1,136 @@
+1) image : An image is a snapshot of the file and it is a read-only template with instructions for creating a docker container.
+
+
+2) container : Docker container is a running instance of an image.It proccesses the output of that particular command and displays in the terminal
+
+3)docker daemon : docker daemon is a service that creates and manages docker images.docker daemon runs on the server called dockerhub or dockerhost
+
+4)docker registry : 
+
+
+docker registry is a system for storing and distributing docker images with specific names.
+
+
+
+
+1)Pull an image:-With the Docker pull command we can pull an image from the Docker registry.
+
+    eg:docker pull webdevops/php-apache
+
+****If you already the image locally, you would get a message that the image is up to date and it will not be re downloaded.
+
+***
+2) Docker search:-
+
+If you are looking for a specific image but you are unsure of the exact name, you could use the docker search command.
+
+      eg:docker search laravel
+
+3)Get a list of the available docker images:
+
+ Once we've pulled a few images, we can get a list of the available ones with the docker images command
+   eg:docker images
+
+4)Deleting old images:
+If you want to clear some space or in case that you want to simple do some housekeeping you can delete the images that are not being used by running this command, just change the IMAGE-ID part with the actual ID of the image that you want to delete
+   eg:docker rmi IMAGE-ID
+      :docker rmi b0566df7e458
+5)Docker run:
+ 
+Now that we've pulled a few images we could actually run them with the docker run command:
+        -docker run IMAGE-ID
+For example I want to run the Laravel image that I've just pulled so what I would do is first to get the image ID, and then run the docker run command:
+
+docker run -d -p 80:80 IMAGE-ID
+
+Quick rundown of the arguments that I've used:
+
+-d - it specifies that I want to run the container in the background so that when I close my terminal the process would keep running
+-p 80:80 - this means that the traffic from the host on port 80 would be forwarded to the container. I need this so that then I could access my Laravel app directly though the browser.
+        
+6)List the running containers:
+
+To list the running containers, you can simple run the docker ps command:
+     
+
+         cmd:docker ps
+
+7)Stop and start a container:
+
+To stop a container simply run the docker stop command:
+      
+            docker stop CONTAINER-ID
+
+
+8)To get a list of all running containers, including the ones that you've stopped already you need to specify the -a argument:
+      
+      docker ps -a
+
+9)
+if you need to you can start the container backup with the docker start command
+
+
+      docker start CONTAINER-ID
+
+10)Deleting a container:
+      
+     
+        To delete a specific container you need to first stop the container and then just run:
+
+        docker rm CONTAINER_ID
+
+This would delete only your container but it would leave the image intact.
+
+If you would like to delete the container and the image all together, just run:
+
+        docker rmi CONTAINER_ID
+11)docker create hello-world:--to create docker container
+    docker start -a <container_id>:-to run later after some time
+
+docker run = docker create + docker start
+
+12)docker login
+13)to get networks list:
+      
+       docker network ls
+
+14)
+
+
+
+
+********how to deploy an application*******
+
+mkdir -for creating a directory
+1)mkdir java-docker-app
+2)write hello world program in java and save          it
+***create dockerfile*****
+
+3)FROM java:8
+4)COPY ./var/www/java
+5)WORKDIR /var/www/java
+6)RUN javac Hello.java
+7)CMD ["java","Hello"]
+*******
+**docker build -t java-docker-app .
+**docker run java-docker-app
+
+
+Assessment:
+#!/bin/bash
+
+echo "Prime numbers in the range of 1 to 20 are:"
+
+for num in {1..20}; do
+  prime=true
+  for (( i=2; i<$num; i++ )); do
+    if (( $num % $i == 0 )); then
+      prime=false
+      break
+    fi
+  done
+  if [ $prime == true ]; then
+    echo $num
+  fi
+done
+
