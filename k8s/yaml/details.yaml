@@ -1,0 +1,44 @@
+# Deployment for details service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: details
+  namespace: default
+  labels:
+    app: details
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: details
+  template:
+    metadata:
+      labels:
+        app: details
+    spec:
+      containers:
+      - name: details
+        image: shiva2003/image2
+        ports:
+        - containerPort: 4000
+        imagePullPolicy: IfNotPresent
+---
+# Service for details
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: details
+    version: v1
+  name: details-service
+  namespace: default
+spec:
+  ports:
+  - port: 4000
+    protocol: TCP
+    targetPort: 4000
+  selector:
+    app: details
+  sessionAffinity: None
+  type: ClusterIP

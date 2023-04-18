@@ -1,0 +1,50 @@
+# Deployment file for frontend service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: default
+  labels:
+    app: frontend
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: shiva2003/image1
+        env:
+        - name: PINGER_BASE_URL
+          value: "http://pinger-v1-service:3000"
+        - name: DETAILS_BASE_URL
+          value: "http://details-service:4000"
+        ports:
+        - containerPort: 9000
+        imagePullPolicy: IfNotPresent # else might try to pull images remotely always
+
+---
+# Service for frontend
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: frontend
+    version: v1
+  name: frontend-service
+  namespace: default
+spec:
+  ports:
+  - port: 9000
+    protocol: TCP
+    targetPort: 9000
+  selector:
+    app: frontend
+  sessionAffinity: None
+  type: ClusterIP

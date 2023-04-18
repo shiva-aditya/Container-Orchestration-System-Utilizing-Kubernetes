@@ -1,0 +1,47 @@
+# Deployment for pinger app v1
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pinger-v1
+  namespace: default
+  labels:
+    app: pinger
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pinger
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: pinger
+        version: v1
+    spec:
+      containers:
+      - name: pinger
+        image: shiva2003/image3
+        ports:
+        - containerPort: 3000
+        imagePullPolicy: IfNotPresent
+---
+# Service for pinger app v1
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: pinger
+    version: v1
+  name: pinger-v1-service
+  namespace: default
+spec:
+  ports:
+  - port: 3000
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: pinger
+    version: v1
+  sessionAffinity: None
+  type: ClusterIP
